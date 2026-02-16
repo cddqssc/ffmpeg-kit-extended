@@ -18,12 +18,16 @@ The `FFmpegKit` class provides a convenient interface for executing FFmpeg comma
 Executes an FFmpeg command synchronously (blocking).
 
 ```dart
-static FFmpegSession execute(String command)
+static FFmpegSession execute(
+  String command, {
+  SessionExecutionStrategy strategy = SessionExecutionStrategy.queue,
+})
 ```
 
 **Parameters:**
 
 - `command` (String): The FFmpeg command to execute (without the `ffmpeg` prefix)
+- `strategy` (SessionExecutionStrategy, optional): Concurrent execution strategy (default: queue)
 
 **Returns:**
 
@@ -53,6 +57,7 @@ static Future<FFmpegSession> executeAsync(
   FFmpegSessionCompleteCallback? onComplete,
   FFmpegLogCallback? onLog,
   FFmpegStatisticsCallback? onStatistics,
+  SessionExecutionStrategy strategy = SessionExecutionStrategy.queue,
 })
 ```
 
@@ -62,6 +67,7 @@ static Future<FFmpegSession> executeAsync(
 - `onComplete` (FFmpegSessionCompleteCallback?, optional): Callback invoked when execution completes
 - `onLog` (FFmpegLogCallback?, optional): Callback invoked for each log message
 - `onStatistics` (FFmpegStatisticsCallback?, optional): Callback invoked for statistics updates
+- `strategy` (SessionExecutionStrategy, optional): Concurrent execution strategy (default: queue)
 
 **Returns:**
 

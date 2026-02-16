@@ -90,12 +90,16 @@ await FFprobeKit.getMediaInformationAsync(
 Executes a custom FFprobe command synchronously.
 
 ```dart
-static FFprobeSession execute(String command)
+static FFprobeSession execute(
+  String command, {
+  SessionExecutionStrategy strategy = SessionExecutionStrategy.queue,
+})
 ```
 
 **Parameters:**
 
 - `command` (String): The FFprobe command to execute (without the `ffprobe` prefix)
+- `strategy` (SessionExecutionStrategy, optional): Concurrent execution strategy (default: queue)
 
 **Returns:**
 
@@ -123,6 +127,7 @@ Executes a custom FFprobe command asynchronously.
 static Future<FFprobeSession> executeAsync(
   String command, {
   FFprobeSessionCompleteCallback? onComplete,
+  SessionExecutionStrategy strategy = SessionExecutionStrategy.queue,
 })
 ```
 
@@ -130,6 +135,7 @@ static Future<FFprobeSession> executeAsync(
 
 - `command` (String): The FFprobe command to execute
 - `onComplete` (FFprobeSessionCompleteCallback?, optional): Callback invoked when complete
+- `strategy` (SessionExecutionStrategy, optional): Concurrent execution strategy (default: queue)
 
 **Returns:**
 
@@ -250,7 +256,7 @@ void onComplete(FFprobeSession session) {
 
 The `MediaInformation` class contains comprehensive metadata about a media file.
 
-### Properties
+### Media Properties
 
 ```dart
 class MediaInformation {
@@ -319,11 +325,11 @@ if (session is MediaInformationSession) {
 }
 ```
 
-## StreamInformation Class
+## StreamInformation Details
 
 Represents a single stream (video, audio, subtitle, etc.) within a media file.
 
-### Properties
+### Stream Properties
 
 ```dart
 class StreamInformation {

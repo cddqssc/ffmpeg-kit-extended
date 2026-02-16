@@ -5,6 +5,7 @@ Complete documentation for FFmpeg Kit Extended Flutter plugin.
 ## Getting Started
 
 - **[README](../README.md)** - Main overview and quick examples
+- **[Installation Guide](installation.md)** - Platform-specific setup instructions
 - **[Quick Start Guide](quick-start.md)** - Get up and running in minutes
 
 ## API Reference
@@ -29,19 +30,19 @@ Complete API documentation for all classes and methods:
   - Position and duration tracking
   - Session conflict resolution
 
-- **[FFmpegKitConfig API](api/config.md)** - Global configuration *(Coming soon)*
+- **[FFmpegKitConfig API](api/config.md)** - Global configuration
   - Log level settings
   - Font directory configuration
   - Global callbacks
   - Session history management
 
-- **[Session API](api/sessions.md)** - Session management *(Coming soon)*
+- **[Session API](api/sessions.md)** - Session management
   - FFmpegSession, FFprobeSession, FFplaySession
   - Session state and lifecycle
   - Return codes and error handling
   - Logs and statistics retrieval
 
-- **[Data Models](api/data-models.md)** - Data structures *(Coming soon)*
+- **[Data Models](api/data-models.md)** - Data structures
   - MediaInformation
   - StreamInformation
   - ChapterInformation
@@ -61,20 +62,20 @@ Comprehensive guides for common tasks:
   - Format conversion
   - Advanced filters (rotate, flip, crop, blur, etc.)
 
-- **[Audio Processing](guides/audio-processing.md)** - Audio operations *(Coming soon)*
+- **[Audio Processing](guides/audio-processing.md)** - Audio operations
   - Audio extraction and conversion
   - Audio compression
   - Volume adjustment
   - Audio mixing
   - Format conversion
 
-- **[Media Information](guides/media-information.md)** - Working with metadata *(Coming soon)*
+- **[Media Information](guides/media-information.md)** - Working with metadata
   - Extracting media information
   - Parsing stream details
   - Reading metadata tags
   - Analyzing video properties
 
-- **[Playback Control](guides/playback-control.md)** - FFplay usage *(Coming soon)*
+- **[Playback Control](guides/playback-control.md)** - FFplay usage
   - Basic playback
   - Playback controls
   - Custom player UI
@@ -89,13 +90,13 @@ Comprehensive guides for common tasks:
   - Statistics monitoring
   - UI integration
 
-- **[Error Handling](guides/error-handling.md)** - Handling failures *(Coming soon)*
+- **[Error Handling](guides/error-handling.md)** - Handling failures
   - Return code checking
   - Log analysis
   - Common errors and solutions
   - Debugging strategies
 
-- **[Advanced Usage](guides/advanced.md)** - Advanced topics *(Coming soon)*
+- **[Advanced Usage](guides/advanced.md)** - Advanced topics
   - FFmpeg pipes
   - Font configuration for subtitles
   - Environment variables
@@ -103,14 +104,14 @@ Comprehensive guides for common tasks:
 
 ## Examples
 
-- **[Common Use Cases](examples/common-use-cases.md)** - Practical examples *(Coming soon)*
+- **[Common Use Cases](examples/common-use-cases.md)** - Practical examples
   - Video thumbnail generation
   - Video compression
   - Audio extraction
   - Format conversion
   - Watermarking
 
-- **[Complete Applications](examples/complete-apps.md)** - Full app examples *(Coming soon)*
+- **[Complete Applications](examples/complete-apps.md)** - Full app examples
   - Video converter app
   - Media player app
   - Video editor app
@@ -153,13 +154,13 @@ await FFmpegKit.executeAsync(
 
 ## Platform Support
 
-| Platform | Status | Notes |
-|----------|--------|-------|
-| Android  | ✅ Supported | API 21+ |
-| iOS      | ✅ Supported | iOS 12+ |
-| macOS    | ✅ Supported | macOS 10.13+ |
-| Linux    | ✅ Supported | x86_64 |
-| Windows  | ✅ Supported | x86_64 |
+| Platform | Status      | Notes        |
+|----------|-------------|--------------|
+| Android  | Not Supported | API 21+      |
+| iOS      | Not Supported | iOS 12+      |
+| macOS    | Not Supported | macOS 10.13+ |
+| Linux    | ✅ Supported | x86_64       |
+| Windows  | ✅ Supported | x86_64       |
 
 ## Additional Resources
 
@@ -178,4 +179,4 @@ This library is licensed under the GNU Lesser General Public License v2.1 or lat
 
 ---
 
-**Note**: Documentation marked with *(Coming soon)* is planned for future releases. The core API documentation and essential guides are already available.
+**Note**: The core API documentation and essential guides are now fully available.
