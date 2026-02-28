@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:ffmpeg_kit_extended_flutter/ffmpeg_kit_extended_flutter.dart';
 
 void main() {
@@ -36,6 +37,13 @@ class _HomePageState extends State<HomePage>
   late TabController _tabController;
   final TextEditingController _outputController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _ffmpegCommandController =
+      TextEditingController(text: "-version");
+  final TextEditingController _ffprobeCommandController =
+      TextEditingController(text: "-version");
+  final TextEditingController _ffplayCommandController =
+      TextEditingController(text: "-i test_video.mp4");
+  String? _selectedProbePath;
 
   @override
   void initState() {
@@ -136,6 +144,16 @@ class _HomePageState extends State<HomePage>
     _addLog("Log Level: ${FFmpegKitConfig.getLogLevel()}");
   }
 
+  Future<void> _runCustomFFmpeg() async {
+    final command = _ffmpegCommandController.text;
+    _addLog("--- Running Custom FFmpeg: $command ---");
+    await FFmpegKit.executeAsync(command, onLog: (log) {
+      _addLog(log.message);
+    }, onComplete: (session) {
+      _addLog("Return code: ${session.getReturnCode()}");
+    });
+  }
+
   // --- FFprobe Examples ---
 
   Future<void> _runFFprobeVersion() async {
@@ -158,12 +176,31 @@ class _HomePageState extends State<HomePage>
     _addLog("Return code: ${session.getReturnCode()}");
   }
 
+  Future<void> _pickProbeFile() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result != null && result.files.single.path != null) {
+      setState(() {
+        _selectedProbePath = result.files.single.path;
+      });
+      _addLog("Selected for probe: $_selectedProbePath");
+    }
+  }
+
   Future<void> _runMediaInformation() async {
-    // Attempt to probe the last generated video if it exists, otherwise use a remote URL
-    final localPath = path.join(Directory.current.path, 'test_video.mp4');
-    final probePath = File(localPath).existsSync()
-        ? localPath
-        : "https://raw.githubusercontent.com/tanersener/ffmpeg-kit/master/test-data/video.mp4";
+    // 1. Use picked file if available
+    // 2. Otherwise use local test_video.mp4
+    // 3. Finally fall back to remote URL
+    final localTestPath = path.join(Directory.current.path, 'test_video.mp4');
+
+    final String probePath;
+    if (_selectedProbePath != null && File(_selectedProbePath!).existsSync()) {
+      probePath = _selectedProbePath!;
+    } else if (File(localTestPath).existsSync()) {
+      probePath = localTestPath;
+    } else {
+      probePath =
+          "https://raw.githubusercontent.com/tanersener/ffmpeg-kit/master/test-data/video.mp4";
+    }
 
     _addLog("--- Getting Media Information for $probePath ---");
 
@@ -176,6 +213,7 @@ class _HomePageState extends State<HomePage>
           _addLog("Duration: ${info.duration}s");
           _addLog("Bitrate: ${info.bitrate}");
           _addLog("Streams count: ${info.streams.length}");
+          _addLog("Media Information: ${info.allPropertiesJson}");
           for (var i = 0; i < info.streams.length; i++) {
             final stream = info.streams[i];
             _addLog(
@@ -186,6 +224,16 @@ class _HomePageState extends State<HomePage>
           _addLog(session.getLogs() ?? "Empty logs.");
         }
       }
+    });
+  }
+
+  Future<void> _runCustomFFprobe() async {
+    final command = _ffprobeCommandController.text;
+    _addLog("--- Running Custom FFprobe: $command ---");
+    await FFprobeKit.executeAsync(command, onComplete: (session) {
+      final output = session.getOutput();
+      if (output != null) _addLog(output);
+      _addLog("Return code: ${session.getReturnCode()}");
     });
   }
 
@@ -205,6 +253,14 @@ class _HomePageState extends State<HomePage>
     });
 
     _addLog("Playback started.");
+  }
+
+  Future<void> _runCustomFFplay() async {
+    final command = _ffplayCommandController.text;
+    _addLog("--- Running Custom FFplay: $command ---");
+    await FFplayKit.executeAsync(command, onComplete: (session) {
+      _addLog("FFplay playback finished");
+    });
   }
 
   @override
@@ -278,19 +334,27 @@ class _HomePageState extends State<HomePage>
   Widget _buildFFmpegTab() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Wrap(
-        spacing: 12,
-        runSpacing: 12,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _demoButton(_generateTestVideo, Icons.video_call, "Gen Video"),
-          _demoButton(_generateTestAudio, Icons.audiotrack, "Gen Audio"),
-          _demoButton(_runFFmpegVersion, Icons.bolt, "Async Version"),
-          _demoButton(_runFFmpegInfoSync, Icons.timer, "Sync Version"),
-          _demoButton(() async {
-            _addLog("--- Running Help ---");
-            await FFmpegKit.executeAsync("-h",
-                onLog: (l) => _addLog(l.message));
-          }, Icons.help_outline, "Help"),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              _demoButton(_generateTestVideo, Icons.video_call, "Gen Video"),
+              _demoButton(_generateTestAudio, Icons.audiotrack, "Gen Audio"),
+              _demoButton(_runFFmpegVersion, Icons.bolt, "Async Version"),
+              _demoButton(_runFFmpegInfoSync, Icons.timer, "Sync Version"),
+              _demoButton(() async {
+                _addLog("--- Running Help ---");
+                await FFmpegKit.executeAsync("-h",
+                    onLog: (l) => _addLog(l.message));
+              }, Icons.help_outline, "Help"),
+            ],
+          ),
+          const SizedBox(height: 24),
+          _buildCustomCommandSection(_ffmpegCommandController, _runCustomFFmpeg,
+              "Enter FFmpeg command"),
         ],
       ),
     );
@@ -299,13 +363,29 @@ class _HomePageState extends State<HomePage>
   Widget _buildFFprobeTab() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Wrap(
-        spacing: 12,
-        runSpacing: 12,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _demoButton(_runFFprobeVersion, Icons.bolt, "Async Version"),
-          _demoButton(_runFFprobeInfoSync, Icons.timer, "Sync Version"),
-          _demoButton(_runMediaInformation, Icons.analytics, "Get Media Info"),
+          if (_selectedProbePath != null) ...[
+            Text("Selected: ${path.basename(_selectedProbePath!)}",
+                style:
+                    const TextStyle(fontSize: 12, fontStyle: FontStyle.italic)),
+            const SizedBox(height: 8),
+          ],
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              _demoButton(_pickProbeFile, Icons.file_open, "Pick File"),
+              _demoButton(
+                  _runMediaInformation, Icons.analytics, "Get Media Info"),
+              _demoButton(_runFFprobeVersion, Icons.bolt, "Async Version"),
+              _demoButton(_runFFprobeInfoSync, Icons.timer, "Sync Version"),
+            ],
+          ),
+          const SizedBox(height: 24),
+          _buildCustomCommandSection(_ffprobeCommandController,
+              _runCustomFFprobe, "Enter FFprobe command"),
         ],
       ),
     );
@@ -318,6 +398,9 @@ class _HomePageState extends State<HomePage>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildCustomCommandSection(_ffplayCommandController,
+                _runCustomFFplay, "Enter FFplay command"),
+            const SizedBox(height: 20),
             const Text("1. Generate Media:",
                 style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
@@ -397,6 +480,35 @@ class _HomePageState extends State<HomePage>
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
+    );
+  }
+
+  Widget _buildCustomCommandSection(
+      TextEditingController controller, VoidCallback onRun, String hint) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Custom Command:",
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  hintText: hint,
+                  isDense: true,
+                  border: const OutlineInputBorder(),
+                ),
+                style: const TextStyle(fontSize: 14),
+              ),
+            ),
+            const SizedBox(width: 8),
+            _demoButton(onRun, Icons.play_arrow, "Run"),
+          ],
+        ),
+      ],
     );
   }
 }
