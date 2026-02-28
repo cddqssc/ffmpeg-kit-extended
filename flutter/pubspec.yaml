@@ -1,5 +1,5 @@
 name: ffmpeg_kit_extended_flutter
-description: FFmpeg Kit Extended for Flutter. Supports Android, iOS and macOS platforms.
+description: FFmpeg Kit Extended for Flutter. Supports Windows and Linux.
 repository: https://github.com/akashskypatel/ffmpeg-kit-extended
 issue_tracker: https://github.com/akashskypatel/ffmpeg-kit-extended/issues
 homepage: https://github.com/akashskypatel/ffmpeg-kit-extended
