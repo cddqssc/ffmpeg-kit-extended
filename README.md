@@ -60,13 +60,7 @@
       # linux: "https://path/to/ffmpeg-kit/libraries"
     ```
 
-3. Import the package in your Dart code:
-
-    ```dart
-    import 'package:ffmpeg_kit_extended_flutter/ffmpeg_kit_extended_flutter.dart';
-    ```
-
-4. Run `dart run ffmpeg_kit_extended_flutter:configure` to generate the native libraries.
+3. Run `dart run ffmpeg_kit_extended_flutter:configure` to generate the native libraries.
 
     ```bash
     dart run ffmpeg_kit_extended_flutter:configure
@@ -78,6 +72,12 @@
     - `--verbose`: Enable verbose output.
     - `--debug`: Enable debug mode. (Fetches remote bundles with debug symbols. Only base bundle is published with debug symbols. You can deploy your own using [ffmpeg-kit-builders](https://github.com/akashskypatel/ffmpeg-kit-builders))
     - `--app-root=<path>`: Specify the path to the app root.
+
+4. Import the package in your Dart code:
+
+    ```dart
+    import 'package:ffmpeg_kit_extended_flutter/ffmpeg_kit_extended_flutter.dart';
+    ```
 
 ## Quick Start
 
@@ -215,8 +215,8 @@ Comprehensive guides are available in the `flutter/docs/` directory:
 
 ### Examples
 
-- [Common Use Cases](flutter/docs/examples/common-use-cases.md) - Practical examples *(Coming soon)*
-- [Complete Applications](flutter/docs/examples/complete-apps.md) - Full app examples *(Coming soon)*
+- [Common Use Cases](flutter/docs/examples/common-use-cases.md) - Practical examples
+- [Complete Applications](flutter/docs/examples/complete-apps.md) - Full app examples
 
 ## Examples
 
@@ -286,7 +286,7 @@ if (FFplayKit.isPlaying()) {
 
 ## Platform Support
 
-| Platform | Status | Notes |
+| Platform | Status | Architecture |
 |----------|--------|-------|
 | Android  | 🚧 Planned | API 21+ |
 | iOS      | Not Supported | iOS 12+ |

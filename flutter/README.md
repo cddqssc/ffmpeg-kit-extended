@@ -12,7 +12,7 @@
 
 - **Cross-Platform Support**: Works on Windows, and Linux.
   - **Android, iOS, macOS**: Not yet supported.
-- **FFmpeg, FFprobe & FFplay**: Full support for media manipulation and information retrieval.
+- **FFmpeg, FFprobe & FFplay**: Full support for media manipulation, information retrieval, and playback.
 - **Dart FFI**: Direct native bindings for optimal performance.
 - **Asynchronous Execution**: Run long-running tasks without blocking the UI thread.
 - **Parallel Execution**: Run multiple tasks in parallel.
@@ -20,6 +20,16 @@
 - **Session Management**: Full control over execution lifecycle (start, cancel, list).
 - **Extensible**: Designed to allow custom native library loading and configuration.
 - **Deploy Custom Builds**: You can deploy custom builds of ffmpeg-kit-extended. See: <https://github.com/akashskypatel/ffmpeg-kit-builders>
+
+### Platform Support
+
+| Platform | Status | Architecture |
+|----------|--------|-------|
+| Android  | 🚧 Planned | API 21+ |
+| iOS      | Not Supported | iOS 12+ |
+| macOS    | Not Supported | macOS 10.13+ |
+| Linux    | ✅ Supported | x86_64 |
+| Windows  | ✅ Supported | x86_64 |
 
 ## 2. Installation
 
@@ -51,13 +61,7 @@
       # linux: "https://path/to/ffmpeg-kit/libraries"
     ```
 
-3. Import the package in your Dart code:
-
-    ```dart
-    import 'package:ffmpeg_kit_extended_flutter/ffmpeg_kit_extended_flutter.dart';
-    ```
-
-4. Run `dart run ffmpeg_kit_extended_flutter:configure` to generate the native libraries.
+3. Run `dart run ffmpeg_kit_extended_flutter:configure` to generate the native libraries.
 
     ```bash
     dart run ffmpeg_kit_extended_flutter:configure
@@ -70,6 +74,12 @@
     - `--debug`: Enable debug mode. (Fetches remote bundles with debug symbols. Only base bundle is published with debug symbols. You can deploy your own using [ffmpeg-kit-builders](https://github.com/akashskypatel/ffmpeg-kit-builders))
     - `--app-root=<path>`: Specify the path to the app root.
 
+4. Import the package in your Dart code:
+
+    ```dart
+    import 'package:ffmpeg_kit_extended_flutter/ffmpeg_kit_extended_flutter.dart';
+    ```
+
 ### 2.1 Pre-bundled Builds
 
 - **base**: Basic build with core FFmpeg libraries. Does not contain any extra libraries.
@@ -78,6 +88,8 @@
 - **video**: Build with video-only FFmpeg libraries.
 - **streaming**: Build with streaming FFmpeg libraries.
 - **video_hw**: Build with hardware-accelerated video FFmpeg libraries.
+
+### 2.2 Feature Matrix
 
 |Feature  |Audio   |Video   |Streaming|Video+Hardware|
 |---------|--------|--------|-------- |--------------|
