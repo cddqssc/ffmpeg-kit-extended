@@ -6,7 +6,7 @@
 
 </center>
 
-`ffmpeg-kit-extended` is a comprehensive Flutter plugin for executing FFmpeg and FFprobe commands on Android, iOS, macOS, Windows, and Linux. It leverages Dart FFI to interact directly with native FFmpeg libraries, providing high performance and flexibility.
+`ffmpeg-kit-extended` is a comprehensive Flutter plugin for executing FFmpeg, FFprobe, and FFplay commands on Windows, and Linux. It leverages Dart FFI to interact directly with native FFmpeg libraries, providing high performance and flexibility.
 
 ## Features
 
