@@ -1,6 +1,11 @@
 
 # FFmpegKit Extended Flutter Plugin CHANGELOG
 
+## Version 0.2.0
+
+- Feature: Added Android support.
+- Fix: Fixed lgpl package resolution.
+
 ## Version 0.1.2
 
 - Feature: Add `flutter_lints` and improve static analysis configuration

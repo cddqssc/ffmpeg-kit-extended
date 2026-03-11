@@ -3,7 +3,7 @@ description: FFmpeg Kit Extended for Flutter. Supports Android, Windows and Linu
 repository: https://github.com/akashskypatel/ffmpeg-kit-extended
 issue_tracker: https://github.com/akashskypatel/ffmpeg-kit-extended/issues
 homepage: https://github.com/akashskypatel/ffmpeg-kit-extended
-version: 0.1.2
+version: 0.2.0
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
