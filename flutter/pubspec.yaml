@@ -1,9 +1,22 @@
 name: ffmpeg_kit_extended_flutter
-description: FFmpeg Kit Extended for Flutter. Supports Android, Windows and Linux.
+description: A comprehensive Flutter plugin for executing FFmpeg, FFprobe, and FFplay commands using Dart FFI. Supports Android, Windows, and Linux.
 repository: https://github.com/akashskypatel/ffmpeg-kit-extended
 issue_tracker: https://github.com/akashskypatel/ffmpeg-kit-extended/issues
 homepage: https://github.com/akashskypatel/ffmpeg-kit-extended
+documentation: https://github.com/akashskypatel/ffmpeg-kit-extended/tree/main/flutter/doc
 version: 0.2.0
+
+topics:
+  - ffmpeg
+  - video-processing
+  - audio-processing
+  - transcoding
+  - convert-media
+  - tag-media
+  - multimedia
+  - ffmpeg-kit
+  - ffprobe
+  - ffplay
 
 environment:
   sdk: ">=3.2.0 <4.0.0"
