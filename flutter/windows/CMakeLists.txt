@@ -43,8 +43,33 @@ function(run_configure)
 
   message(STATUS "FFmpegKit: Configuring for Windows (App Root: ${APP_ROOT})...")
 
+  # Find dart executable explicitly
+  # On Windows, we MUST pick dart.bat or dart.exe. 
+  # Avoid picking up the extensionless 'dart' file which is a shell script.
+  if(WIN32)
+      find_program(DART_EXECUTABLE NAMES dart.bat dart.exe
+          HINTS "$ENV{FLUTTER_ROOT}/bin" "${FLUTTER_ROOT}/bin"
+      )
+  else()
+      find_program(DART_EXECUTABLE NAMES dart
+          HINTS "$ENV{FLUTTER_ROOT}/bin" "${FLUTTER_ROOT}/bin"
+      )
+  endif()
+  
+  if(NOT DART_EXECUTABLE)
+      message(FATAL_ERROR "FFmpegKit: 'dart' executable not found in PATH or FLUTTER_ROOT. Please ensure Flutter SDK is installed.")
+  endif()
+
+  # On Windows, running a .bat file often requires calling it through cmd /c
+  if(WIN32 AND "${DART_EXECUTABLE}" MATCHES "\\.bat$")
+      file(TO_NATIVE_PATH "${DART_EXECUTABLE}" DART_NATIVE_PATH)
+      set(DART_CMD "cmd" "/c" "${DART_NATIVE_PATH}")
+  else()
+      set(DART_CMD "${DART_EXECUTABLE}")
+  endif()
+
   execute_process(
-      COMMAND dart run ffmpeg_kit_extended_flutter:configure "windows" "--app-root=${APP_ROOT}" "--verbose"
+      COMMAND ${DART_CMD} run ffmpeg_kit_extended_flutter:configure "windows" "--app-root=${APP_ROOT}" "--verbose"
       WORKING_DIRECTORY "${APP_ROOT}"
       RESULT_VARIABLE configure_result
       OUTPUT_VARIABLE configure_output
